@@ -13,19 +13,13 @@ export default {
   data: () => {
     return {
       titulo: 'Alura Pic',
-      fotos: [
-        {
-          id: 0,
-          url: 'https://abrilsuperinteressante.files.wordpress.com/2018/05/filhotes-de-cachorro-alcanc3a7am-o-c3a1pice-de-fofura-com-8-semanas1.png?quality=70&strip=info&resize=680,453',
-          titulo: 'Cachorro',
-        },
-        {
-          id: 1,
-          url: 'https://abrilsuperinteressante.files.wordpress.com/2018/05/filhotes-de-cachorro-alcanc3a7am-o-c3a1pice-de-fofura-com-8-semanas1.png?quality=70&strip=info&resize=680,453',
-          titulo: 'Cachorro',
-        },
-      ]
+      fotos: []
     } 
+  },
+  created() {
+    this.$http.get('http://localhost:3000/v1/fotos')
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos, err => console.log(err))
   }
 }
 </script>
