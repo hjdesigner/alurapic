@@ -1,27 +1,42 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <meu-menu :rotas="routes"/>
+    <transition name="pagina">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import routes from './routes';
+import Menu from './components/shared/menu/Menu.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    'meu-menu' : Menu
+  },
+  data() {
+    return {
+      routes
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+  .pagina-enter-active, .pagina-leave-active {
+    transition: opacity .3s
+  }
+  .pagina-enter, .pagina-leave-active {
+    opacity: 0
+  }
 </style>
