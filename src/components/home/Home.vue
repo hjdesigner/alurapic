@@ -6,8 +6,8 @@
     
     <ul class="lista-fotos">
       <li v-for="foto of fotosComFiltro" :key="foto.id" class="lista-fotos-item">
-        <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>
+        <meu-painel :titulo="foto.titulo" v-meu-transform:scale.animate="1.2">
+          <imagem-responsiva :url="foto.url" :titulo="foto.titulo" v-meu-transform:rotate.animate="15" />
             <meu-botao
                 rotulo="remover"
                 tipo="button"
@@ -84,5 +84,8 @@ export default {
 
   .lista-fotos .lista-fotos-item {
     display: inline-block;
+  }
+  .painel-conteudo {
+    overflow: hidden;
   }
 </style>
