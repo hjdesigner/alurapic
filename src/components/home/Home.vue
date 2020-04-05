@@ -4,6 +4,8 @@
 
     <input type="search" class="filtro" @input="filtro = $event.target.value" placeholder="filtre pelo título da foto">
     
+    <p v-show="mensagem" class="centralizado">{{ mensagem }}</p>
+
     <ul class="lista-fotos">
       <li v-for="foto of fotosComFiltro" :key="foto.id" class="lista-fotos-item">
         <meu-painel :titulo="foto.titulo" v-meu-transform:scale.animate="1.2">
@@ -24,6 +26,7 @@
 import Painel from '../shared/painel/painel.vue'
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue'
 import Botao from '../shared/botao/Botao.vue';
+import FotoService from '../../domain/foto/FotoService';
 
 export default {
   name: 'Home',
@@ -34,7 +37,19 @@ export default {
   },
   methods: {
     remove(foto) {
-        alert(foto.titulo);
+      this.service
+        .apaga(foto._id)
+        .then(
+          () => {
+            let indice = this.fotos.indexOf(foto);
+            this.fotos.splice(indice, 1);
+            this.mensagem = 'Foto removida com sucesso'
+          }, 
+          err => {
+            this.mensagem = 'Não foi possível remover a foto';
+            console.log(err);
+          }
+        )
     }
   },
   data: () => {
@@ -42,6 +57,7 @@ export default {
       titulo: 'Alura Pic',
       fotos: [],
       filtro: '',
+      mensagem: '',
     } 
   },
   computed: {
@@ -55,9 +71,12 @@ export default {
     }
   },
   created() {
-    this.$http.get('http://localhost:3000/v1/fotos')
-      .then(res => res.json())
-      .then(fotos => this.fotos = fotos, err => console.log(err))
+
+    this.service = new FotoService(this.$resource);
+
+    this.service
+      .lista()
+      .then(fotos => this.fotos = fotos, err => console.log(err));
   }
 }
 </script>
